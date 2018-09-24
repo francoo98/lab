@@ -12,7 +12,6 @@
 #define BUFFER_SIZE 1000
 
 int abrirArchivo(int argc, char ** argv);
-void escribirTextoEnBuffer(char *buffer, char *aux);
 extern void proc_contador();
 extern void proc_mayus();
 
@@ -57,12 +56,4 @@ int abrirArchivo(int argc, char ** argv) {
 		_exit(EXIT_FAILURE);
 	}      
 	return fd;
-}
-
-void escribirTextoEnBuffer(char *buffer, char *aux) {
-	for(int i = 0; i < BUFFER_SIZE; i++) {
-		*buffer = *aux;	
-		buffer++;
-		aux++;
-	}
 }

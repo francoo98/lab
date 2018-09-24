@@ -7,9 +7,10 @@
 #include <sys/stat.h>
 #include <fcntl.h>
 
-
 #define BUFFER_SIZE 1000
 #define MAX_PALABRA 21
+
+void mostrarResultados(int palabras[MAX_PALABRA]);
 
 void proc_contador(char *buf , sem_t *sem_contador, sem_t *sem_contadorPadre, int *finDeArchivo) {
 	int palabras[MAX_PALABRA] = {0};
@@ -27,6 +28,10 @@ void proc_contador(char *buf , sem_t *sem_contador, sem_t *sem_contadorPadre, in
 		}
 		sem_post(sem_contador);
 	}
+	mostrarResultados(palabras);
+}
+
+void mostrarResultados(int palabras[MAX_PALABRA]) {
 	for(int e = 0; e < MAX_PALABRA; e++) {
 		if(palabras[e] != 0) {
 			printf("Palabras de %d letras: %d\n", e+1, palabras[e]);
