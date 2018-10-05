@@ -28,7 +28,7 @@ int main(int argc, char **argv){
 		}
 	}
 	i = 1;
-	while(fin != 0)
+	while(fin > 0)
 	{
 		if(bytes != 0)
 		{
