@@ -20,8 +20,8 @@ int main(int argc, char **argv){
 				fdi = open(optarg, O_RDONLY);
 				break;
 			case 'o':
-				strcpy(out, optarg);
-				strcpy(outd, optarg);
+				strncpy(out, optarg, 20);
+				strncpy(outd, optarg, 20);
 				outflag = 1;
 				break;
 			case 's':
@@ -44,7 +44,7 @@ int main(int argc, char **argv){
 		{
 			if(outflag = 1)
 			{
-			sprintf(out, "%s-part%d", outd, i);
+			snprintf(out, 20, "%s-part%d", outd, i);
 			fdo = open(out, O_RDWR|O_CREAT, 0644);
 			write(fdo, bufferr, leido);
 			close(fdo);
@@ -63,7 +63,7 @@ int main(int argc, char **argv){
 		char buferr[size];
 		for(i = 1; i <= cArchivos; i++)	
 		{
-			sprintf(out, "%s-part%d", outd, i);
+			snprintf(out, 20, "%s-part%d", outd, i);
 			fdo = open(out, O_RDWR|O_CREAT, 0644);
 			if(i == cArchivos)
 			{
