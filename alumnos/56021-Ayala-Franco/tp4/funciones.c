@@ -52,6 +52,8 @@ char *armarHttpRequest(char *archivo) {
 	char *r_ptr = malloc(120 * sizeof(char));
 	strcpy(r_ptr, "GET ");
 	strcat(r_ptr, archivo);
-	strcat(r_ptr, " HTTP/1.0\n\n");
+	strcat(r_ptr, " HTTP/1.1\n");
+	strcat(r_ptr, "Host: www.um.edu.ar\nConnection: close\n\n");
+	printf("r_ptr: %s\n", r_ptr);
 	return r_ptr;
 }
