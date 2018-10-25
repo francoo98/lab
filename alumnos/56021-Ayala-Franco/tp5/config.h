@@ -1,0 +1,2 @@
+int getPort();
+char *getRootDir();

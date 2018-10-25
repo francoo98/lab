@@ -24,7 +24,7 @@ struct in_addr {
 };*/
 int main(){
 	int socketDeCliente, leido, conectado, connSocketDeCliente, pid, i;
-	char buff[1000] = "", bufferInternet[1000], url[90], palabra[22], dominio[22], archivo[70], *httpRequest, *linea = "";
+	char buff[1000] = "", bufferInternet[1000], url[220], palabra[22], dominio[22], archivo[100], *httpRequest, *linea = "";
 	struct sockaddr_in procrem={};
 	socketDeCliente = socket(AF_INET, SOCK_STREAM, 0);
 	if  (socketDeCliente < 0 ){
@@ -49,7 +49,6 @@ int main(){
 		//hijo
 		if ( pid == 0 ) {
 			leido = read (connSocketDeCliente,buff ,sizeof buff);  
-			//aca leo lo que manda el cliente
 			printf("%s\n", buff);
 			separarUrlYPalabra(buff, url, palabra);
 			printf("url: %s\npalabra: %s\n", url, palabra);
@@ -63,26 +62,25 @@ int main(){
 			}
 			socketInternet.sin_family = AF_INET;
 			socketInternet.sin_port = htons(80);
-			struct hostent *hp = gethostbyname("www.um.edu.ar");
-			inet_pton(AF_INET,inet_ntoa( *( struct in_addr*)( hp -> h_addr_list[0])), &procrem.sin_addr);
+			struct hostent *hp = gethostbyname(dominio);
+			inet_pton(AF_INET,inet_ntoa( *( struct in_addr*)( hp -> h_addr_list[0])), &socketInternet.sin_addr);
 			conectado = connect(fdSocketInternet,(struct sockaddr *)&socketInternet, sizeof socketInternet);
 			if(conectado < 0) {
 				perror("connect");
 				return -1;
 			}
 			httpRequest = armarHttpRequest(archivo);
-			//write(fdSocketInternet, httpRequest, 73); 
-			write(fdSocketInternet, "GET /es/ua/fi.html HTTP/1.1\nHost: www.um.edu.ar\nConnection: close\n\n", 66);
-			printf("HTTP REQUEST: %s\n", httpRequest); //esta aca
+			write(fdSocketInternet, httpRequest, strlen(httpRequest)); 
+			//printf("strlen httprequest: %d\n", strlen(httpRequest));
 			while((i = read(fdSocketInternet, bufferInternet, sizeof bufferInternet)) > 0) {
 				linea = buscarLinea(bufferInternet, palabra);
-				printf("%s", bufferInternet);
+				//printf("%s", bufferInternet);
 				if(linea[0])	//se fija si linea tiene algo escrito. Si tiene algo, sale del while.
 					break;		
 			}
-			//i = write(connSocketDeCliente, linea, 73);
+			i = write(connSocketDeCliente, linea, strlen(linea));
 			//printf("i: %d\n", i); 
-			//printf("%s\n", linea);
+			//printf("linea: %s\n", linea);
 			free(linea);
 			free(httpRequest);
 			return 0;

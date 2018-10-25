@@ -8,14 +8,14 @@
 #include <arpa/inet.h>
 
 int main(int argc, char *argv[]) {
-	char url[90], palabra[22], mensaje[115], buffer[1000];
+	char url[150] = "", palabra[22], mensaje[200] = "", buffer[1000];
 	int puerto = 5000, socketfd, i, conectado;
 	struct sockaddr_in procrem={};
 	memset(buffer, 0, sizeof buffer);
 	while((i = getopt(argc, argv, "u:t:p:h")) != -1) {
 		switch(i) {
 			case 'u':
-				strncpy(url, optarg, 90);
+				strncpy(url, optarg, 150);
 				break;
 			case 't':
 				strncpy(palabra, optarg, 22);
@@ -25,6 +25,7 @@ int main(int argc, char *argv[]) {
 				break;
 			case 'h':	
 				printf("u: pagina web.\nt: palabra.\np: puerto.");
+				return 0;
 				break;
 		}
 	}	
@@ -40,11 +41,13 @@ int main(int argc, char *argv[]) {
                 perror ("connect");
                 return -1;
 	}
-	strncpy(mensaje, url, 115);
+	/*strncpy(mensaje, url, 115);
 	strcat(mensaje, "{}");
-	strcat(mensaje, palabra);
+	strcat(mensaje, palabra);*/
+	//snprintf("%s{}%s", url, palabra);
+	dprintf(socketfd, "%s{}%s", url, palabra);
 	write(socketfd, mensaje, 115);
-	printf("%s\n", mensaje);
+	//printf("mensaje: %s\n", mensaje);
 	read(socketfd, buffer, 1000);
 	printf("%s\n", buffer);
 	return 0;
