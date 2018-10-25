@@ -12,6 +12,7 @@ La aplicación deberá recibir consultas desde clientes de red de manera concurr
 Cuando un cliente se conecta, le envía la información necesaria para buscar contenido en la web por argumento
 - la dir de una página web
 - la palabra a buscar
+
 El servidor debe obtener esa URL y buscar en dicha página la palabra, utilizando el protocolo HTTP.
 Finalmente, el servidor, debe retornar el resultado de la búsqueda al cliente.
 
@@ -30,7 +31,7 @@ Finalmente, el servidor, debe retornar el resultado de la búsqueda al cliente.
 
 ~~~~~~~~~~~~~~~~~~~
 $ ./server-tp4 -p 8080 &
-$ ./cliente-tp4 -u http://www.um.edu.ar/es/ua/fi.html -t "Teléfonos" -s 127.0.0.1 -p 8080
+$ ./cliente-tp4 -u http://www.um.edu.ar/es/ua/fi.html -t "Teléfonos" 127.0.0.1 8080
 
 respuesta: Teléfonos: 54 261 4202017. Fax: 54 261 4202017 (Opción 9)
 
