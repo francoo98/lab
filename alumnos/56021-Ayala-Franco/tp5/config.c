@@ -1,13 +1,7 @@
-#include <sys/types.h>
-#include <sys/stat.h>
-#include <fcntl.h>
-#include <string.h>
-#include <unistd.h>
-#include <stdio.h>
-#include <stdlib.h>
+#include "config.h"
 
-int getPort() {
-	int confFileFd = open("servidor.conf", O_RDONLY);
+int getPort(char *configFile) {
+	int confFileFd = open(configFile, O_RDONLY);
 	int port;
 	char buffer[1000], *line, *portstring;
 	read(confFileFd, buffer, sizeof buffer);
@@ -18,8 +12,8 @@ int getPort() {
 	return port;
 }
 
-char *getRootDir() {
-	int confFileFd = open("servidor.conf", O_RDONLY);
+char *getRootDir(char *configFile) {
+	int confFileFd = open(configFile, O_RDONLY);
 	char buffer[1000], *line = malloc(sizeof(char));
 	read(confFileFd, buffer, sizeof buffer);
 	strtok(buffer, "\n");

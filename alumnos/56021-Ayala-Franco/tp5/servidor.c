@@ -11,10 +11,18 @@
 #include "servicio.h"
 #include "config.h"
 
-int main(){
-	int fd, fdcliente, leido, conectado, connfd, pid;
+int main(int argc, char **argv){
+	int fd, fdcliente, leido, conectado, connfd, pid, i;
 	char buff[1000];
+	char configFile[120] = "servidor.conf";
 	struct sockaddr_in procrem={};
+	while((i = getopt(argc, argv, "f:")) != -1) {
+		switch(i) {
+			case 'f':
+				strncpy(configFile, optarg, 120);
+				break;
+		}
+	}
 	fd = socket(AF_INET, SOCK_STREAM, 0);
 	if  (fd < 0 ){
 		perror ("socket");
@@ -22,7 +30,7 @@ int main(){
 	}
 
 	procrem.sin_family = AF_INET;
-	procrem.sin_port = htons(getPort());
+	procrem.sin_port = htons(getPort(configFile));
 	//procrem.sin_addr = 192.168.1.52;
 	procrem.sin_addr.s_addr = htonl(INADDR_ANY);
 	//inet_pton(AF_INET,"0.0.0.0", &procrem.sin_addr);
@@ -34,9 +42,12 @@ int main(){
 	}
 
 	listen(fd, 5);
-	while ( (connfd = accept(fd,NULL, 0)) > 0 ){
-		pthread_t tid;	
-		pthread_create(&tid, NULL, servicio, (void *) connfd);
+	while ((connfd = accept(fd,NULL, 0)) > 0){
+		pthread_t tid;
+		struct serviceData *sd = malloc(sizeof(struct serviceData));
+		sd->connfd = connfd;
+		sd->configFile = configFile;
+		pthread_create(&tid, NULL, servicio, (void *) sd);
 	}
 	return 0;
 }
