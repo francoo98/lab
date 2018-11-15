@@ -32,10 +32,6 @@ char *getResourcePath(char *bufferClient, char *rootDir) {
 	int i = 0;
 	strtok(bufferClient, " ");
 	resource = strtok(NULL, " ");
-	/*for(i = 0; i < strlen(resource)-1; i++) {
-		resourcePath[i] = resourcePath[i+1];
-	}*/
-	//resource[i] = '\0';
 	strcpy(resourcePath, rootDir);
 	strcat(resourcePath, resource);
 	printf("%s\n", resourcePath);
